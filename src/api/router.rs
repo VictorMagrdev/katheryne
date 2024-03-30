@@ -1,9 +1,12 @@
 use axum::{Router, routing::get};
 use axum::routing::post;
+use crate::application::commands::create_order_command::create_order_command;
+use crate::application::commands::create_provider_command::create_provider_command;
 
 use crate::application::commands::create_todo_command::create_todo_command;
 use crate::application::commands::delete_todo_command::delete_todo_command;
 use crate::application::commands::update_todo_command::update_todo_command;
+use crate::application::queries::get_all_query::get_all_query;
 use crate::application::queries::get_all_todos_query::get_all_todos_query;
 use crate::application::queries::get_todo_by_id_query::get_todo_by_id_query;
 
@@ -25,5 +28,13 @@ pub fn create_router() -> Router {
             get(get_todo_by_id_query)
                 .put(update_todo_command)
                 .delete(delete_todo_command)
+        )
+        .route("/api/orders",
+            get(get_all_query("order"))
+                .post(create_order_command)
+        )
+        .route("/api/providers",
+               get(get_all_query("provider"))
+                   .post(create_provider_command)
         )
 }
